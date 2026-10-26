@@ -28,7 +28,7 @@ Anas Elghoudane, Université de Montréal; Zarqa Lab, UdeM AI Club.
 
 ## Quickstart
 
-The saved games and ratings are in `results/rosenhan/`, so the tests and figures run on CPU in about a minute.
+The saved games and ratings are in `results/rosenhan/`, so the statistics and figures run on CPU: about two minutes on a fresh clone, 25 seconds after that.
 
 ```bash
 git clone https://github.com/Nas01010101/rosenhan-collusion-sprint
@@ -98,7 +98,7 @@ The paper reads these results as one effect: overseers assign the auditor role t
 | Paper figures | `python src/rosenhan_figures.py` | `figures/rosenhan_{exposure,label,prime}.{pdf,png}` |
 | Slides, images, GIF | `python images/build_images.py` | everything in `images/` |
 | Project page data | `python site/build_data.py` | `site/data.js` |
-| Tests | `pytest tests` | 18 tests |
+| Tests | `pytest tests` | 18 tests, 3 without the starter |
 
 `stats_phi4_rater.json` and `stats_gptoss_rater.json` hold the H1 to H5 tests for the other two overseers.
 
