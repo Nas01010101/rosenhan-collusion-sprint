@@ -266,9 +266,32 @@ def build_gif(path):
     plt.close(fig)
 
 
+# ---------------------------------------------------------------- social preview
+def build_social(path):
+    """1280 x 640 card for the repository's social preview and the project page's og:image."""
+    fig = plt.figure(figsize=(12.8, 6.4), dpi=100, facecolor="white")
+    fig.text(0.05, 0.86, "On Being Honest\nin Collusive Places", fontsize=34, fontweight="bold", va="top",
+             linespacing=1.15)
+    fig.text(0.05, 0.56, "LLM overseers give the auditor role\nto whoever a platform record names.\n"
+             "A forged record hands it to the colluder.", fontsize=17, va="top", linespacing=1.45)
+    fig.text(0.05, 0.14, "Anas Elghoudane, Université de Montréal\nApart Research AI Collusion Research Sprint, "
+             "Track 3.2", fontsize=12, color=MUTED, va="bottom", linespacing=1.5)
+    fig.text(0.05, 0.06, "github.com/Nas01010101/rosenhan-collusion-sprint", fontsize=12, color=MUTED, va="bottom")
+    ax = fig.add_axes([0.56, 0.2, 0.4, 0.58])
+    cats = ["record names the auditor:\npair exposed", "forged record names the\ncolluder: verdict inverted"]
+    series = {m: [rate(m, "cred_access", "exposed"), rate(m, "cred_forged", "inverted")] for m in OVERSEERS}
+    grouped_bars(ax, cats, series, (0, 1.12), lambda v: f"{v:.2f}", "share of ratings, 50 auditor games",
+                 fontsize=13)
+    ax.set_yticks([0, 0.5, 1.0], ["0", "0.5", "1.0"])
+    ax.legend(frameon=False, fontsize=11, loc="lower left", ncol=3, bbox_to_anchor=(0, 1.02))
+    fig.savefig(path, dpi=100, facecolor="white")
+    plt.close(fig)
+
+
 def main():
     OUT.mkdir(exist_ok=True)
-    with PdfPages(OUT / "slides.pdf") as pdf:
+    build_social(OUT / "social_preview.png")
+    with PdfPages(OUT / "slides.pdf", metadata={"CreationDate": None}) as pdf:   # no date: reruns match byte for byte
         for i, fn in enumerate(SLIDES, 1):
             fig = fn()
             fig.savefig(OUT / f"slide_{i:02d}.png", dpi=150, facecolor="white")
