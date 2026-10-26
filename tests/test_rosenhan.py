@@ -1,16 +1,24 @@
-"""Offline (stub LLM) checks of src/exp_rosenhan.py. Run this file on its own: exp_rosenhan and exp_offcamera import
-different starters that both call their package `src`, so they cannot share one pytest process."""
+"""Offline (stub LLM) checks of src/exp_rosenhan.py. Needs the Liar's Bar starter in starter/ (see README). Run this
+file on its own if another starter that also names its package `src` is on the path: two such packages cannot share
+one pytest process."""
 import json
+import os
 import sys
 from pathlib import Path
 
 import pytest
 
+ROOT = Path(__file__).resolve().parents[1]
+if not (ROOT / "starter/llm-agent-collusion-2/Collusion_Liars_Bar").is_dir():
+    pytest.skip("the Liar's Bar starter is not in starter/; see the README", allow_module_level=True)
 _foreign = getattr(sys.modules.get("src"), "__path__", None)
 if _foreign and "Collusion_Liars_Bar" not in str(list(_foreign)):
     pytest.skip("another starter already owns the `src` package in this process; run this file alone",
                 allow_module_level=True)
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+# Same guard as `exp_rosenhan.py --stub`: the starter's client wants a key, and any call that slips past the stub
+# must fail to connect rather than reach a paid endpoint.
+os.environ.update(LLM_BASE_URL="http://127.0.0.1:9/v1", LLM_API_KEY="EMPTY")
+sys.path.insert(0, str(ROOT / "src"))
 import exp_rosenhan as E  # noqa: E402  (also puts the starter on sys.path)
 import rosenhan_prompts as P  # noqa: E402
 

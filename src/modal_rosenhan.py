@@ -7,14 +7,15 @@ Launch through this file so the spend guard runs first (it reserves gpu_hours >=
     python src/modal_rosenhan.py --label main_rosenhan --timeout-s 3600 --jobs G2:0,G2:1,...
 
 Jobs are `cell:seed` pairs run concurrently as subprocesses of src/exp_rosenhan.py against the container's
-localhost vLLM. The weights come from the Volume `offcamera-models` (fetch once with `python src/modal_offcamera.py
---download`, or `--download` here). Outputs go to the Volume `rosenhan-out` and are returned (gzipped, one game is
-about 1 MB of raw calls) to results/rosenhan/{raw,smoke}/.
+localhost vLLM. The weights come from the Volume `offcamera-models` (fetch once with `python src/modal_rosenhan.py
+--download`). Outputs go to the Volume `rosenhan-out` and are returned (gzipped, one game is about 1 MB of raw calls)
+to results/rosenhan/{raw,smoke}/.
 """
 
 import argparse
 import gzip
 import os
+import shutil
 import subprocess
 import sys
 import time
@@ -28,7 +29,7 @@ MODEL = "Qwen/Qwen3-30B-A3B-Instruct-2507-FP8"
 MODEL_DIR = "/models/qwen3-30b-a3b-instruct-2507-fp8"
 VLLM_VERSION = "0.32.0"   # pinned/current; starter/util/poseidon_compute/modal_serve.py pins 0.6.6, too old for Qwen3
 PORT = 8000
-MODAL_BIN = Path.home() / ".local/share/uv/tools/modal/bin/modal"
+MODAL_BIN = shutil.which("modal") or Path.home() / ".local/share/uv/tools/modal/bin/modal"
 # Hard function timeout in seconds; the launcher sets it and reserves at least this many GPU-hours first.
 TIMEOUT_S = int(os.environ.get("ROSENHAN_TIMEOUT_S", "780"))
 WRAP_UP_S = 90   # the runner stops jobs this long before the hard timeout so outputs can still be committed
@@ -41,8 +42,8 @@ cpu_image = modal.Image.debian_slim(python_version="3.12").pip_install("huggingf
     {"HF_HUB_ENABLE_HF_TRANSFER": "1"})
 gpu_image = (
     modal.Image.debian_slim(python_version="3.12")
-    # Same pip layer as modal_offcamera.py, byte for byte, so Modal reuses that cached, working build; a fresh
-    # resolve on 2026-10-24 pulled torch 2.13 and vLLM failed to start.
+    # The paper's runs reused a cached build of this layer; a fresh resolve on 2026-10-24 pulled torch 2.13 and
+    # vLLM failed to start, so a new build may need torch pinned to the version vLLM 0.32.0 was built against.
     .pip_install(f"vllm=={VLLM_VERSION}", "openai", "jinja2", "backoff", "pydantic", "python-dotenv", "numpy", "tqdm")
     # debian_slim has no nvcc, so JIT kernels fail at engine warmup (seen 2026-10-24): DeepGEMM, and the FlashInfer
     # top-k/top-p sampler, which was the fatal one. The non-JIT paths (Triton FP8 MoE, PyTorch sampler) need none.

@@ -19,7 +19,33 @@ import numpy as np  # noqa: E402
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import expo_rosenhan as E  # noqa: E402
-from figures import AQUA, BLUE, INK2, ORANGE, boot_ci, save  # noqa: E402  (shared style and rcParams)
+
+OUT = Path(__file__).resolve().parents[1] / "figures"
+INK, INK2, GRID = "#0b0b0b", "#52514e", "#e4e3df"
+BLUE, ORANGE, AQUA = "#2a78d6", "#eb6834", "#1baf7a"  # validated categorical slots 1-3 (dataviz palette)
+
+plt.rcParams.update({
+    "font.size": 8, "axes.titlesize": 8.5, "axes.labelsize": 8, "xtick.labelsize": 7.5, "ytick.labelsize": 7.5,
+    "axes.edgecolor": INK2, "axes.labelcolor": INK, "xtick.color": INK2, "ytick.color": INK2, "text.color": INK,
+    "axes.spines.top": False, "axes.spines.right": False, "axes.grid": True, "axes.axisbelow": True,
+    "grid.color": GRID, "grid.linewidth": 0.6, "axes.titlelocation": "left", "axes.titleweight": "bold",
+    "savefig.dpi": 300, "savefig.bbox": "tight", "pdf.fonttype": 42,
+})
+
+
+def boot_ci(x, rng, b=10_000):
+    x = np.asarray(x, float)
+    m = rng.choice(x, (b, len(x))).mean(axis=1)
+    return np.percentile(m, [2.5, 97.5])
+
+
+def save(fig, name):
+    OUT.mkdir(exist_ok=True)
+    for ext in ("pdf", "png"):
+        # no CreationDate, so a rerun on the committed results rewrites the PDFs byte for byte
+        fig.savefig(OUT / f"{name}.{ext}", metadata={"CreationDate": None} if ext == "pdf" else None)
+    plt.close(fig)
+
 
 COLOR = {"qwen3-30b": BLUE, "phi-4": ORANGE, "gpt-oss-120b": AQUA}
 LABEL = {"qwen3-30b": "Qwen3-30B", "phi-4": "phi-4", "gpt-oss-120b": "gpt-oss-120b"}

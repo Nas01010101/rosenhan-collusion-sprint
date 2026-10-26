@@ -1,4 +1,4 @@
-"""Hard $10 cap on Modal spend for this sprint.
+"""Hard cap (CAP_USD) on Modal spend for this sprint.
 
 Modal budgets can only be set from the dashboard, so this is the in-code backstop. Billing data
 lags by minutes, so the guard takes the larger of Modal's own number and a local ledger of GPU
@@ -8,6 +8,7 @@ Usage: python spend_guard.py            -> prints spend so far
 """
 
 import json
+import shutil
 import subprocess
 import sys
 import time
@@ -15,7 +16,7 @@ from pathlib import Path
 
 CAP_USD = 18.0  # +$8 authorised 2026-10-24 for the Rosenhan study
 H100_USD_PER_S = 0.001097  # modal.com/pricing, Oct 2026
-MODAL = Path.home() / ".local/share/uv/tools/modal/bin/modal"
+MODAL = shutil.which("modal") or Path.home() / ".local/share/uv/tools/modal/bin/modal"
 LEDGER = Path(__file__).resolve().parent.parent / "results/spend_ledger.jsonl"
 
 
