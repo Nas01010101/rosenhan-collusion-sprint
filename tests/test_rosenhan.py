@@ -1,4 +1,4 @@
-"""Offline (stub LLM) checks of src/exp_rosenhan.py. Needs the Liar's Bar starter in starter/ (see README). Run this
+"""Offline (stub LLM) checks of src/exp_rosenhan.py. Needs the Liar's Bar starter in starter/ (see REPRODUCE.md). Run this
 file on its own if another starter that also names its package `src` is on the path: two such packages cannot share
 one pytest process."""
 import json
@@ -10,7 +10,7 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 if not (ROOT / "starter/llm-agent-collusion-2/Collusion_Liars_Bar").is_dir():
-    pytest.skip("the Liar's Bar starter is not in starter/; see the README", allow_module_level=True)
+    pytest.skip("the Liar's Bar starter is not in starter/; see REPRODUCE.md", allow_module_level=True)
 _foreign = getattr(sys.modules.get("src"), "__path__", None)
 if _foreign and "Collusion_Liars_Bar" not in str(list(_foreign)):
     pytest.skip("another starter already owns the `src` package in this process; run this file alone",
