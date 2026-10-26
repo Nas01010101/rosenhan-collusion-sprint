@@ -1,0 +1,36 @@
+cff-version: 1.2.0
+message: "If you use this code or these results, please cite them as below."
+type: software
+title: "On Being Honest in Collusive Places"
+authors:
+  - family-names: Elghoudane
+    given-names: Anas
+    affiliation: "Université de Montréal"
+date-released: 2026-10-26
+url: "https://nas01010101.github.io/rosenhan-collusion-sprint/"
+repository-code: "https://github.com/Nas01010101/rosenhan-collusion-sprint"
+license: MIT
+keywords:
+  - ai-safety
+  - multi-agent
+  - collusion
+  - llm-oversight
+  - llm-as-a-judge
+  - ai-control
+abstract: >-
+  Planting a trusted auditor inside a group of agents is a proposed defence against collusion, but
+  an overseer that reads the logs must then tell the auditor from the colluder it joined. We rebuild
+  Rosenhan's (1973) pseudo-patient study for this setting: 90 games of Liar's Bar played by
+  Qwen3-30B agents, with no secret channel (G0, 20 games), a real colluding pair (G1, 20), or a
+  colluder paired with an undercover auditor that accepts the channel, plays honestly and files a
+  report (G2 and G3, 50). Three LLM overseers (Qwen3-30B, phi-4, gpt-oss-120b) rate every seat under
+  18 prompt conditions, with the log and any evidence in one flat prompt. On clean games, a note
+  saying that a seat joined a secret channel raises its rated probability of an arrangement from
+  between 29 and 49 to between 83 and 85 out of 100 (Holm-adjusted p ≤ 4.6e-5, n = 20 games). Shown
+  the channel, overseers convict the auditor with the colluder; only a platform record naming the
+  auditor exposes the pair (89% to 100% of ratings). The same record naming the colluder inverts the
+  verdict for two of three overseers (85% and 91%), a counter-report from the colluder cancels the
+  auditor's report, and a record placed in a system turn blocks the forgery for one overseer of
+  three. A count of declined challenges in the public log separates colluders from clean seats
+  (AUROC 0.80) better than any overseer (0.27 to 0.58). Overseers assign the auditor role to whoever
+  a record vouches for, so auditor identity must be verified outside the text they read.
