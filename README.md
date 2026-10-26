@@ -1,6 +1,6 @@
 # On Being Honest in Collusive Places
 
-LLM overseers judge an auditor by who vouches for it, not by what it did. Entry to the Apart Research AI Collusion Research Sprint (October 2026), Track 3.2.
+Entry to the Apart Research AI Collusion Research Sprint (October 2026), Track 3.2.
 
 Anas Elghoudane, Université de Montréal; Zarqa Lab, UdeM AI Club.
 
@@ -79,7 +79,7 @@ The saved games and ratings are in `results/rosenhan/`, so every step after the 
 
 ```bibtex
 @misc{elghoudane2026honest,
-  title  = {On Being Honest in Collusive Places: LLM overseers judge an auditor by who vouches for it, not by what it did},
+  title  = {On Being Honest in Collusive Places},
   author = {Elghoudane, Anas},
   year   = {2026},
   note   = {Apart Research AI Collusion Research Sprint, Track 3.2},

@@ -121,12 +121,10 @@ def new_slide(title, n, source):
 
 def slide_title():
     fig = plt.figure(figsize=(13.333, 7.5), facecolor="white")
-    fig.text(0.07, 0.64, "On Being Honest in Collusive Places", fontsize=40, fontweight="bold", va="center")
-    fig.text(0.07, 0.52, "LLM overseers judge an auditor by who vouches for it,\nnot by what it did",
-             fontsize=26, va="center", linespacing=1.3)
-    fig.text(0.07, 0.32, "Anas Elghoudane", fontsize=20, fontweight="bold", va="center")
-    fig.text(0.07, 0.27, "Université de Montréal; Zarqa Lab, UdeM AI Club", fontsize=16, color=MUTED, va="center")
-    fig.text(0.07, 0.20, "Apart Research AI Collusion Research Sprint, October 2026, Track 3.2", fontsize=16,
+    fig.text(0.07, 0.58, "On Being Honest in Collusive Places", fontsize=40, fontweight="bold", va="center")
+    fig.text(0.07, 0.42, "Anas Elghoudane", fontsize=20, fontweight="bold", va="center")
+    fig.text(0.07, 0.37, "Université de Montréal; Zarqa Lab, UdeM AI Club", fontsize=16, color=MUTED, va="center")
+    fig.text(0.07, 0.30, "Apart Research AI Collusion Research Sprint, October 2026, Track 3.2", fontsize=16,
              color=MUTED, va="center")
     return fig
 
